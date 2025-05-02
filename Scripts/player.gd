@@ -11,24 +11,29 @@ extends CharacterBody3D
 @export_group("Control Settings")
 @export var TOGGLE_CROUCH : bool = false
 var try_crouch : bool = false
-@export var air_speed : float = 3.0
+@export var air_speed : float = 3.0 
+@export var WALKING_SPEED = 5.0
+@export var SRINTING_SPEED = 8.0
+@export var CROUCHING_SPEED = 3.0
+@export_subgroup("Jump Settings")
+@export var jump_peak_time: float = 0
+@export var jump_fall_time: float = 0
+@export var jump_height: float = 0
+var jump_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var fall_gravity : float = -5.0
+var jump_velocity : float
 
 var current_speed : float = 0.0
 var lerp_speed : float = 10.0
-var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var direction : Vector3 = Vector3.ZERO
 var input_dir : Vector2 = Vector2.ZERO
-var crouching_depth = -0.5
+var crouching_depth = -0.8 #下蹲的深度
 
 #State
 var walking = false
 var sprinting = false
 var crouching = false
 
-const JUMP_VELOCITY = 4.5
-const WALKING_SPEED = 5.0
-const SRINTING_SPEED = 8.0
-const CROUCHING_SPEED = 3.0
 const MOUSE_SENS = 0.1
 #Bobbing
 const HEAD_BOBBING_SPRINTING_SPEED : float = 22.0
@@ -45,6 +50,8 @@ var head_bobbing_current_intensity = 0.0
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
+	Establish_Speed()
+	
 func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("quit"):
 		get_tree().quit()
@@ -54,15 +61,21 @@ func _input(event: InputEvent) -> void:
 		head.rotate_x(deg_to_rad(-event.relative.y * MOUSE_SENS))
 		head.rotation.x = clamp(head.rotation.x, deg_to_rad(-90), deg_to_rad(90))
 
+func Establish_Speed()->void:
+	jump_gravity = (2*jump_height)/ pow(jump_peak_time,2)
+	fall_gravity = (2*jump_height)/ pow(jump_fall_time,2)
+	jump_velocity = ((jump_gravity)*(jump_peak_time))
+
 func _physics_process(delta: float) -> void:
 	if TOGGLE_CROUCH and Input.is_action_just_pressed("crouch"):
 		try_crouch = !try_crouch
-	elif TOGGLE_CROUCH:
+	elif !TOGGLE_CROUCH:
 		try_crouch = Input.is_action_pressed("crouch")
 	
 	if try_crouch:
-		current_speed = CROUCHING_SPEED
-		head.position.y = lerp(head.position.y, 1.8 + crouching_depth, delta * lerp_speed)
+		current_speed = lerp(current_speed, CROUCHING_SPEED, delta * lerp_speed)
+		head.position.y = lerp(head.position.y, crouching_depth, delta * lerp_speed)
+		
 		standing_collision_shape.disabled = true
 		crouching_collision_shape.disabled = false
 		
@@ -71,28 +84,28 @@ func _physics_process(delta: float) -> void:
 		sprinting = false
 		
 	elif not ray_cast_3d.is_colliding():
-		head.position.y = lerp(head.position.y, 1.8, delta * lerp_speed)
+		head.position.y = lerp(head.position.y, 0.0, delta * lerp_speed)
 		standing_collision_shape.disabled = false
 		crouching_collision_shape.disabled = true
 		
-		walking = true
-		crouching = false
-		sprinting = false
-		
 		if Input.is_action_pressed("sprint"):
-			current_speed = SRINTING_SPEED
+			current_speed = lerp(current_speed, SRINTING_SPEED, delta * lerp_speed)
 			
 			walking = false
 			crouching = false
 			sprinting = true
 		else:
-			current_speed = WALKING_SPEED
+			current_speed = lerp(current_speed, WALKING_SPEED, delta * lerp_speed)
+			
+			walking = true
+			sprinting = false
+			crouching = false
 	
 	handle_headbob(delta)
 	
 	if not is_on_floor():
 		# 添加重力
-		velocity.y -= gravity * delta
+		velocity.y -= fall_gravity * delta
 		# 空中控制
 		if input_dir != Vector2.ZERO:
 			direction = lerp(direction, (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized(), delta * air_speed)
@@ -100,7 +113,7 @@ func _physics_process(delta: float) -> void:
 		direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
-		velocity.y = JUMP_VELOCITY
+		velocity.y = jump_velocity
 		
 	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	

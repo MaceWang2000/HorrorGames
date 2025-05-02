@@ -1,0 +1,8 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://2dcj1kb0q88x"]
+
+[ext_resource type="Texture2D" uid="uid://bfmolg6chxdl3" path="res://Level/Material/Dark/texture_13.png" id="1_donq3"]
+
+[resource]
+albedo_texture = ExtResource("1_donq3")
+uv1_triplanar = true
+texture_filter = 2

@@ -1,0 +1,44 @@
+[gd_scene load_steps=7 format=3 uid="uid://dop6ddn338bjm"]
+
+[ext_resource type="Script" uid="uid://b6i0uj3hr0ps" path="res://MoveInput/level.gd" id="1_j75oi"]
+[ext_resource type="PackedScene" uid="uid://dkdcfkhmr8n8r" path="res://Scence/Player.tscn" id="1_k432w"]
+[ext_resource type="Texture2D" uid="uid://daa1lggeo3wrv" path="res://Texture/Dark/texture_01.png" id="2_he4s2"]
+[ext_resource type="Texture2D" uid="uid://dxtynmiw2sbng" path="res://Texture/Dark/texture_02.png" id="4_trff2"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ren1h"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("2_he4s2")
+uv1_triplanar = true
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_tqa4j"]
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+albedo_texture = ExtResource("4_trff2")
+uv1_triplanar = true
+
+[node name="Level01" type="Node3D"]
+script = ExtResource("1_j75oi")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0.3, 2.5, 0.3)
+
+[node name="Floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+use_collision = true
+collision_layer = 2
+collision_mask = 3
+size = Vector3(26.2, 0.5, 24)
+material = SubResource("StandardMaterial3D_ren1h")
+
+[node name="Player" parent="." instance=ExtResource("1_k432w")]
+collision_mask = 2
+
+[node name="Wall" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.6, -3)
+use_collision = true
+collision_layer = 2
+size = Vector3(3.5, 0.2, 3.7)
+material = SubResource("StandardMaterial3D_tqa4j")

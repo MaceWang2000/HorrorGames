@@ -1,0 +1,9 @@
+[gd_resource type="Resource" script_class="GUIDETriggerComboStep" load_steps=2 format=3 uid="uid://bu2oowe7l13qs"]
+
+[ext_resource type="Script" uid="uid://c1p8pbgs2kkdc" path="res://addons/guide/triggers/guide_trigger_combo_step.gd" id="1_alg8n"]
+
+[resource]
+script = ExtResource("1_alg8n")
+completion_events = 1
+time_to_actuate = 0.5
+metadata/_custom_type_script = ExtResource("1_alg8n")

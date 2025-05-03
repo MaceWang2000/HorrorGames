@@ -1,9 +1,10 @@
-[gd_scene load_steps=10 format=3 uid="uid://dkdcfkhmr8n8r"]
+[gd_scene load_steps=11 format=3 uid="uid://dkdcfkhmr8n8r"]
 
 [ext_resource type="Script" uid="uid://dwg2c7cqygfhr" path="res://Scripts/player.gd" id="1_s5kgh"]
 [ext_resource type="Script" uid="uid://d35v4rm2jj3ew" path="res://Weapon/weapon_container.gd" id="2_7iold"]
 [ext_resource type="PackedScene" uid="uid://l3mqu1irdshq" path="res://Player/Interaction/interaction_ray_cast.tscn" id="2_h5heb"]
 [ext_resource type="PackedScene" uid="uid://cgqfi6f6yd3ad" path="res://Player/player_hud.tscn" id="3_7iold"]
+[ext_resource type="PackedScene" uid="uid://cdncath0uc85c" path="res://Horror/HorrorObject/Prefabs/ui_prompt_cmponent.tscn" id="5_1k0cf"]
 [ext_resource type="PackedScene" uid="uid://bonfedknf25v8" path="res://Player/Interaction/player_interaction_component.tscn" id="5_2dldw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_btqht"]
@@ -65,7 +66,9 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
 target_position = Vector3(0, 2, 0)
 collision_mask = 2
 
-[node name="PlayerHUD" parent="." instance=ExtResource("3_7iold")]
+[node name="PlayerHUD" parent="." node_paths=PackedStringArray("player") instance=ExtResource("3_7iold")]
+player = NodePath("..")
+prompt_component = ExtResource("5_1k0cf")
 
 [node name="PlayerInteractionComponent" parent="." node_paths=PackedStringArray("interaction_raycast") instance=ExtResource("5_2dldw")]
 interaction_raycast = NodePath("../Nek/Head/Eyes/Camera3D/InteractionRayCast")

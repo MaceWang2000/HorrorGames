@@ -1,0 +1,57 @@
+[gd_scene load_steps=6 format=3 uid="uid://cdncath0uc85c"]
+
+[ext_resource type="Script" uid="uid://dt1opew0uk5op" path="res://Horror/HorrorObject/Component/ui_prompt_cmponent.gd" id="1_1lyy2"]
+[ext_resource type="PackedScene" uid="uid://dkfp4ik3bkmuw" path="res://Horror/HorrorObject/Prefabs/dynamic_input_icon.tscn" id="2_cvx70"]
+[ext_resource type="Texture2D" uid="uid://dxrhcbqaifse5" path="res://Player/Interaction/Texture/InputIconSheet_Kenney_KeyboardMouse.png" id="3_o6rvg"]
+[ext_resource type="Texture2D" uid="uid://c60eo8j3wrufu" path="res://Player/Interaction/Texture/keyboard_f.png" id="4_t0ttb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_cvx70"]
+content_margin_left = 0.0
+content_margin_top = 0.0
+content_margin_right = 0.0
+content_margin_bottom = 0.0
+bg_color = Color(0.101961, 0.101961, 0.101961, 0.6)
+expand_margin_right = 2.0
+
+[node name="UiPanelContainer" type="PanelContainer" node_paths=PackedStringArray("interaction_button", "interaction_text")]
+offset_right = 114.0
+offset_bottom = 32.0
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_styles/panel = SubResource("StyleBoxFlat_cvx70")
+script = ExtResource("1_1lyy2")
+interaction_button = NodePath("HBoxContainer/MarginContainer/InteractionButton")
+interaction_text = NodePath("HBoxContainer/RichTextLabel")
+
+[node name="HBoxContainer" type="HBoxContainer" parent="."]
+layout_mode = 2
+
+[node name="MarginContainer" type="MarginContainer" parent="HBoxContainer"]
+custom_minimum_size = Vector2(32, 32)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 15
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 15
+
+[node name="InteractionButton" parent="HBoxContainer/MarginContainer" instance=ExtResource("2_cvx70")]
+position = Vector2(0, 0)
+scale = Vector2(0.5, 0.5)
+centered = false
+hframes = 1
+vframes = 1
+frame = 0
+keyboard_icon = ExtResource("3_o6rvg")
+action_name = "interact"
+interact1_icon = ExtResource("4_t0ttb")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="HBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_font_sizes/normal_font_size = 20
+bbcode_enabled = true
+text = "interact"
+fit_content = true
+autowrap_mode = 0

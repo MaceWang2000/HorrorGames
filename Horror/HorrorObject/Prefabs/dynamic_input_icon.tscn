@@ -1,0 +1,12 @@
+[gd_scene load_steps=3 format=3 uid="uid://dkfp4ik3bkmuw"]
+
+[ext_resource type="Texture2D" uid="uid://xlng4r82bubc" path="res://Player/Interaction/Texture/InputIconSheet_Kenney_Xbox.png" id="1_d1ccj"]
+[ext_resource type="Script" uid="uid://cuxkp1jkjky" path="res://Horror/HorrorObject/Component/dynamic_input_icon.gd" id="1_ta377"]
+
+[node name="DynamicInputIcon" type="Sprite2D"]
+position = Vector2(50, 50)
+texture = ExtResource("1_d1ccj")
+hframes = 12
+vframes = 12
+frame = 38
+script = ExtResource("1_ta377")

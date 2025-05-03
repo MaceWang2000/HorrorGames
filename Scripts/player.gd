@@ -8,6 +8,7 @@ class_name HorrorPlayer
 @onready var nek: Node3D = $Nek
 @onready var eyes: Node3D = $Nek/Head/Eyes
 @onready var camera_3d: Camera3D = %Camera3D
+@onready var player_interaction_component: PlayerInteractionComponent = $PlayerInteractionComponent
 
 @export_group("Control Settings")
 @export var TOGGLE_CROUCH : bool = false

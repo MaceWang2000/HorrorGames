@@ -1,19 +1,37 @@
-[gd_scene load_steps=8 format=3 uid="uid://dop6ddn338bjm"]
+[gd_scene load_steps=9 format=3 uid="uid://dop6ddn338bjm"]
 
 [ext_resource type="Script" uid="uid://b6i0uj3hr0ps" path="res://Level/level.gd" id="1_j75oi"]
 [ext_resource type="PackedScene" uid="uid://dkdcfkhmr8n8r" path="res://Scence/Player.tscn" id="1_k432w"]
-[ext_resource type="Texture2D" uid="uid://bip6lah237cjb" path="res://Texture/kloofendal_48d_partly_cloudy_puresky_4k.hdr" id="4_ec426"]
 [ext_resource type="Material" uid="uid://2dcj1kb0q88x" path="res://Level/Material/level01.tres" id="4_w7gt2"]
+[ext_resource type="PackedScene" uid="uid://b1n301nugmhwh" path="res://Environment/chair.tscn" id="5_w7gt2"]
+[ext_resource type="PackedScene" uid="uid://blvk837sjat41" path="res://Environment/pick_lantern.tscn" id="6_j75oi"]
 
-[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_hv3wp"]
-panorama = ExtResource("4_ec426")
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_w7gt2"]
+sky_top_color = Color(0.160156, 0.101368, 0.0387878, 1)
+sky_horizon_color = Color(0.15625, 0.0762939, 0.0762939, 1)
+ground_bottom_color = Color(0, 0, 0, 1)
+ground_horizon_color = Color(0, 0, 0, 1)
 
 [sub_resource type="Sky" id="Sky_ec426"]
-sky_material = SubResource("PanoramaSkyMaterial_hv3wp")
+sky_material = SubResource("ProceduralSkyMaterial_w7gt2")
 
 [sub_resource type="Environment" id="Environment_w7gt2"]
 background_mode = 2
 sky = SubResource("Sky_ec426")
+reflected_light_source = 2
+tonemap_mode = 3
+glow_enabled = true
+glow_levels/6 = 1.85
+glow_levels/7 = 0.41
+glow_normalized = true
+glow_intensity = 8.0
+glow_strength = 1.23
+fog_enabled = true
+fog_light_color = Color(0.121094, 0.121094, 0.121094, 1)
+fog_light_energy = 1.79
+fog_sun_scatter = 1.0
+fog_density = 0.0779
+volumetric_fog_albedo = Color(1, 0.921875, 0.921875, 1)
 
 [node name="Level01" type="Node3D"]
 script = ExtResource("1_j75oi")
@@ -21,15 +39,10 @@ script = ExtResource("1_j75oi")
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_w7gt2")
 
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0.3, 2.5, 0.3)
-shadow_enabled = true
-
 [node name="Player" parent="." instance=ExtResource("1_k432w")]
-collision_mask = 2
-jump_peak_time = 0.4
-jump_fall_time = 0.35
-jump_height = 1.5
+WALKING_SPEED = 3.0
+SRINTING_SPEED = 5.0
+CROUCHING_SPEED = 2.0
 
 [node name="Floor" type="CSGBox3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.05, 0)
@@ -38,3 +51,18 @@ use_collision = true
 collision_layer = 2
 collision_mask = 3
 size = Vector3(100, 0.1, 100)
+
+[node name="chair" parent="." instance=ExtResource("5_w7gt2")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 1.2, -0.000699997, 0)
+
+[node name="Lantern" parent="." instance=ExtResource("6_j75oi")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1.7)
+
+[node name="OmniLight3D" parent="Lantern" index="3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.3, 0)
+light_color = Color(1, 0.822144, 0.632813, 1)
+light_energy = 2.253
+light_indirect_energy = 0.0
+light_volumetric_fog_energy = 0.0
+
+[editable path="Lantern"]

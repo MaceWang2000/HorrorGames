@@ -1,0 +1,34 @@
+[gd_scene load_steps=7 format=3 uid="uid://b0iw4bbm542qj"]
+
+[ext_resource type="Texture2D" uid="uid://bip6lah237cjb" path="res://Texture/kloofendal_48d_partly_cloudy_puresky_4k.hdr" id="1_trpv2"]
+[ext_resource type="Material" uid="uid://2dcj1kb0q88x" path="res://Level/Material/level01.tres" id="2_1wgdt"]
+[ext_resource type="PackedScene" uid="uid://dkdcfkhmr8n8r" path="res://Scence/Player.tscn" id="3_1wgdt"]
+
+[sub_resource type="PanoramaSkyMaterial" id="PanoramaSkyMaterial_efwbx"]
+panorama = ExtResource("1_trpv2")
+
+[sub_resource type="Sky" id="Sky_4sme4"]
+sky_material = SubResource("PanoramaSkyMaterial_efwbx")
+
+[sub_resource type="Environment" id="Environment_efwbx"]
+background_mode = 2
+sky = SubResource("Sky_4sme4")
+
+[node name="Test" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_efwbx")
+
+[node name="Floor" type="CSGBox3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0)
+material_override = ExtResource("2_1wgdt")
+use_collision = true
+collision_layer = 2
+collision_mask = 3
+size = Vector3(100, 0.5, 100)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.707107, 0.707107, 0, -0.707107, 0.707107, 0, 4.7, 0)
+shadow_enabled = true
+
+[node name="Player" parent="." instance=ExtResource("3_1wgdt")]

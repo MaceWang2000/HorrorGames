@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://c8dtirhilm1m5"]
+
+[ext_resource type="Script" uid="uid://su8ro5fddydr" path="res://Horror/HorrorObject/Component/horror_sitttable.gd" id="1_i8r10"]
+
+[node name="Seat" type="Node3D"]
+script = ExtResource("1_i8r10")

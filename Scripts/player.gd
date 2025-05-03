@@ -1,4 +1,5 @@
 extends CharacterBody3D
+class_name HorrorPlayer
 
 @onready var head: Node3D = $Nek/Head
 @onready var standing_collision_shape: CollisionShape3D = $StandingCollisionShape
@@ -22,11 +23,13 @@ var try_crouch : bool = false
 var jump_gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var fall_gravity : float = -5.0
 var jump_velocity : float
+@export_group("Interaction Settings")
+@export var secondary_left : Node3D
 
 var current_speed : float = 0.0
 var lerp_speed : float = 10.0
-var direction : Vector3 = Vector3.ZERO
-var input_dir : Vector2 = Vector2.ZERO
+var direction : Vector3
+var input_dir : Vector2
 var crouching_depth = -0.8 #下蹲的深度
 
 #State
@@ -36,12 +39,12 @@ var crouching = false
 
 const MOUSE_SENS = 0.1
 #Bobbing
-const HEAD_BOBBING_SPRINTING_SPEED : float = 22.0
-const HEAD_BOBBING_WALKING_SPEED : float = 14.0
-const HEAD_BOBBING_CROUCHING_SPEED : float = 10.0
-const HEAD_BOBBING_SPRINTING_INTENSITY : float = 0.2
-const HEAD_BOBBING_WALKING_INTENSITY : float = 0.1
-const HEAD_BOBBING_CROHCHING_INTENSITY : float = 0.05
+const HEAD_BOBBING_SPRINTING_SPEED : float = 16.0
+const HEAD_BOBBING_WALKING_SPEED : float = 12.0
+const HEAD_BOBBING_CROUCHING_SPEED : float = 8.0
+const HEAD_BOBBING_SPRINTING_INTENSITY : float = 0.05
+const HEAD_BOBBING_WALKING_INTENSITY : float = 0.03
+const HEAD_BOBBING_CROHCHING_INTENSITY : float = 0.08
 var head_bobbing_vector = Vector2.ZERO
 var head_bobbing_index = 0.0
 var head_bobbing_current_intensity = 0.0
@@ -102,6 +105,7 @@ func _physics_process(delta: float) -> void:
 			crouching = false
 	
 	handle_headbob(delta)
+	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	
 	if not is_on_floor():
 		# 添加重力
@@ -114,15 +118,13 @@ func _physics_process(delta: float) -> void:
 	# Handle jump.
 	if Input.is_action_just_pressed("jump") and is_on_floor():
 		velocity.y = jump_velocity
-		
-	input_dir = Input.get_vector("move_left", "move_right", "move_forward", "move_back")
 	
 	if direction:
 		velocity.x = lerp(velocity.x, direction.x * current_speed, lerp_speed * delta)
 		velocity.z = lerp(velocity.z, direction.z * current_speed, lerp_speed * delta)
 	else:
 		velocity.x = lerp(velocity.x, 0.0, lerp_speed * delta)
-		velocity.z = lerp(velocity.x, 0.0, lerp_speed * delta)
+		velocity.z = lerp(velocity.z, 0.0, lerp_speed * delta)
 
 	move_and_slide()
 

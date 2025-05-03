@@ -1,7 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://dkdcfkhmr8n8r"]
+[gd_scene load_steps=10 format=3 uid="uid://dkdcfkhmr8n8r"]
 
 [ext_resource type="Script" uid="uid://dwg2c7cqygfhr" path="res://Scripts/player.gd" id="1_s5kgh"]
 [ext_resource type="Script" uid="uid://d35v4rm2jj3ew" path="res://Weapon/weapon_container.gd" id="2_7iold"]
+[ext_resource type="PackedScene" uid="uid://l3mqu1irdshq" path="res://Player/Interaction/interaction_ray_cast.tscn" id="2_h5heb"]
+[ext_resource type="PackedScene" uid="uid://cgqfi6f6yd3ad" path="res://Player/player_hud.tscn" id="3_7iold"]
+[ext_resource type="PackedScene" uid="uid://bonfedknf25v8" path="res://Player/Interaction/player_interaction_component.tscn" id="5_2dldw"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_btqht"]
 radius = 0.3
@@ -11,10 +14,22 @@ height = 1.8
 radius = 0.3
 height = 1.0
 
-[node name="Player" type="CharacterBody3D"]
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_2dldw"]
+albedo_color = Color(1, 0.438354, 0.164063, 1)
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_2dldw"]
+radius = 0.3
+height = 1.8
+
+[node name="Player" type="CharacterBody3D" node_paths=PackedStringArray("secondary_left")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)
+collision_mask = 2
 script = ExtResource("1_s5kgh")
 TOGGLE_CROUCH = true
+jump_peak_time = 0.4
+jump_fall_time = 0.35
+jump_height = 1.5
+secondary_left = NodePath("Nek/Head/Eyes/Camera3D/WeaponContainer/SecondaryLeft")
 
 [node name="StandingCollisionShape" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_btqht")
@@ -34,15 +49,32 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
 [node name="Camera3D" type="Camera3D" parent="Nek/Head/Eyes"]
 unique_name_in_owner = true
+cull_mask = 1048573
 fov = 95.0
 
-[node name="RayCast3D" type="RayCast3D" parent="Nek/Head/Eyes/Camera3D"]
-target_position = Vector3(0, 0, -2)
+[node name="InteractionRayCast" parent="Nek/Head/Eyes/Camera3D" instance=ExtResource("2_h5heb")]
 
 [node name="WeaponContainer" type="Node3D" parent="Nek/Head/Eyes/Camera3D"]
 script = ExtResource("2_7iold")
+
+[node name="SecondaryLeft" type="Node3D" parent="Nek/Head/Eyes/Camera3D/WeaponContainer"]
+transform = Transform3D(0.0347919, 0.00273818, 0.999391, -0.0784591, 0.996917, 0, -0.99631, -0.0784113, 0.0348995, -0.63, -0.355, -0.485)
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.9, 0)
 target_position = Vector3(0, 2, 0)
 collision_mask = 2
+
+[node name="PlayerHUD" parent="." instance=ExtResource("3_7iold")]
+
+[node name="PlayerInteractionComponent" parent="." node_paths=PackedStringArray("interaction_raycast") instance=ExtResource("5_2dldw")]
+interaction_raycast = NodePath("../Nek/Head/Eyes/Camera3D/InteractionRayCast")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+layers = 2
+material_override = SubResource("StandardMaterial3D_2dldw")
+cast_shadow = 0
+mesh = SubResource("CapsuleMesh_2dldw")
+
+[connection signal="interactable_seen" from="Nek/Head/Eyes/Camera3D/InteractionRayCast" to="PlayerInteractionComponent" method="_on_interaction_ray_cast_interactable_seen"]
+[connection signal="interactable_unseen" from="Nek/Head/Eyes/Camera3D/InteractionRayCast" to="PlayerInteractionComponent" method="_on_interaction_ray_cast_interactable_unseen"]

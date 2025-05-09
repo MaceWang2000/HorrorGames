@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://cgqfi6f6yd3ad"]
 
 [ext_resource type="Texture2D" uid="uid://brq4iqf6ctrcc" path="res://Player/Texture/target_a.png" id="1_4vgym"]
-[ext_resource type="Script" uid="uid://bddoe6svpmwoc" path="res://Horror/HorrorObject/Prefabs/player_hud.gd" id="1_xng8h"]
+[ext_resource type="Script" uid="uid://bddoe6svpmwoc" path="res://Horror/HorrorObject/Component/player_hud.gd" id="1_xng8h"]
 
 [node name="PlayerHUD" type="Control"]
 layout_mode = 3

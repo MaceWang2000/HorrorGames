@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://dw7q4k2i23yw8"]
+
+[ext_resource type="Script" uid="uid://cbldqiao1cued" path="res://Horror/HorrorObject/Component/base_interaction.gd" id="1_e67nn"]
+
+[node name="BaseInteraction" type="Node3D"]
+script = ExtResource("1_e67nn")
+input_map_action = "interact"

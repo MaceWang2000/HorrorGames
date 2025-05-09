@@ -30,7 +30,7 @@ TOGGLE_CROUCH = true
 jump_peak_time = 0.4
 jump_fall_time = 0.35
 jump_height = 1.5
-secondary_left = NodePath("Nek/Head/Eyes/Camera3D/WeaponContainer/SecondaryLeft")
+secondary_left = NodePath("Body/Nek/Head/Eyes/Camera3D/WeaponContainer/SecondaryLeft")
 
 [node name="StandingCollisionShape" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_btqht")
@@ -41,24 +41,30 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.4, 0)
 shape = SubResource("CapsuleShape3D_sc0lt")
 disabled = true
 
-[node name="Nek" type="Node3D" parent="."]
+[node name="Body" type="Node3D" parent="."]
+unique_name_in_owner = true
+
+[node name="Nek" type="Node3D" parent="Body"]
+unique_name_in_owner = true
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.8, 0)
 
-[node name="Head" type="Node3D" parent="Nek"]
+[node name="Head" type="Node3D" parent="Body/Nek"]
+unique_name_in_owner = true
 
-[node name="Eyes" type="Node3D" parent="Nek/Head"]
+[node name="Eyes" type="Node3D" parent="Body/Nek/Head"]
+unique_name_in_owner = true
 
-[node name="Camera3D" type="Camera3D" parent="Nek/Head/Eyes"]
+[node name="Camera3D" type="Camera3D" parent="Body/Nek/Head/Eyes"]
 unique_name_in_owner = true
 cull_mask = 1048573
 fov = 95.0
 
-[node name="InteractionRayCast" parent="Nek/Head/Eyes/Camera3D" instance=ExtResource("2_h5heb")]
+[node name="InteractionRayCast" parent="Body/Nek/Head/Eyes/Camera3D" instance=ExtResource("2_h5heb")]
 
-[node name="WeaponContainer" type="Node3D" parent="Nek/Head/Eyes/Camera3D"]
+[node name="WeaponContainer" type="Node3D" parent="Body/Nek/Head/Eyes/Camera3D"]
 script = ExtResource("2_7iold")
 
-[node name="SecondaryLeft" type="Node3D" parent="Nek/Head/Eyes/Camera3D/WeaponContainer"]
+[node name="SecondaryLeft" type="Node3D" parent="Body/Nek/Head/Eyes/Camera3D/WeaponContainer"]
 transform = Transform3D(0.0347919, 0.00273818, 0.999391, -0.0784591, 0.996917, 0, -0.99631, -0.0784113, 0.0348995, -0.63, -0.355, -0.485)
 
 [node name="RayCast3D" type="RayCast3D" parent="."]
@@ -71,7 +77,7 @@ player = NodePath("..")
 prompt_component = ExtResource("5_1k0cf")
 
 [node name="PlayerInteractionComponent" parent="." node_paths=PackedStringArray("interaction_raycast") instance=ExtResource("5_2dldw")]
-interaction_raycast = NodePath("../Nek/Head/Eyes/Camera3D/InteractionRayCast")
+interaction_raycast = NodePath("../Body/Nek/Head/Eyes/Camera3D/InteractionRayCast")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 layers = 2
@@ -79,5 +85,5 @@ material_override = SubResource("StandardMaterial3D_2dldw")
 cast_shadow = 0
 mesh = SubResource("CapsuleMesh_2dldw")
 
-[connection signal="interactable_seen" from="Nek/Head/Eyes/Camera3D/InteractionRayCast" to="PlayerInteractionComponent" method="_on_interaction_ray_cast_interactable_seen"]
-[connection signal="interactable_unseen" from="Nek/Head/Eyes/Camera3D/InteractionRayCast" to="PlayerInteractionComponent" method="_on_interaction_ray_cast_interactable_unseen"]
+[connection signal="interactable_seen" from="Body/Nek/Head/Eyes/Camera3D/InteractionRayCast" to="PlayerInteractionComponent" method="_on_interaction_ray_cast_interactable_seen"]
+[connection signal="interactable_unseen" from="Body/Nek/Head/Eyes/Camera3D/InteractionRayCast" to="PlayerInteractionComponent" method="_on_interaction_ray_cast_interactable_unseen"]

@@ -20,6 +20,8 @@ config/icon="res://icon.svg"
 [autoload]
 
 InputHelper="*res://addons/input_helper/input_helper.gd"
+HorrorSceneManager="*res://Horror/SceneManager/horror_scene_manager.gd"
+SoundManager="*res://addons/sound_manager/sound_manager.gd"
 
 [dialogic]
 
@@ -86,7 +88,7 @@ window/vsync/vsync_mode=0
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/input_helper/plugin.cfg", "res://addons/ridiculous_coding/plugin.cfg")
+enabled=PackedStringArray("res://addons/input_helper/plugin.cfg", "res://addons/ridiculous_coding/plugin.cfg", "res://addons/sound_manager/plugin.cfg")
 
 [file_customization]
 
